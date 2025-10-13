@@ -7,21 +7,25 @@
 */
 
 (() => {
-  // CONFIG: image paths and messages (edit messages to your own)
+  // CONFIG: your image paths and messages
   const photos = [
-    { src: "assets/images/photo1.jpg", msg: "Happy Birthday, my Priye — your smile is my sunrise." },
-    { src: "assets/images/photo2.jpg", msg: "In small moments and long silences, I found you." },
-    { src: "assets/images/photo3.jpg", msg: "Your laughter is the compass I follow on hard days." },
-    { src: "assets/images/photo4.jpg", msg: "I celebrate you today and every day. Be happy." }
+    { src: "assets/images/hero.jpg", msg: "Happy Birthday, my Priye — the day you were born, love learned how to breathe." },
+    { src: "assets/images/gallery1.jpg", msg: "You’ve been my calm in chaos, and the reason my silence smiles." },
+    { src: "assets/images/gallery2.jpg", msg: "If I could gift you one thing today, it would be the way my heart sees you." },
+    { src: "assets/images/gallery3.jpg", msg: "No wish could ever match the one I make for you — always, your happiness." }
   ];
 
   const letterText = `Madam Ji,
 
-I don't know exactly when I started carrying you in my quiet places — maybe it was a smile, maybe it was a day we spoke for a while. Still, somewhere between those moments, you became the best part of my ordinary.
+I don’t know if words can ever reach the place you hold in me, but I wanted this to be something you can feel — not just read.
 
-I am not asking for anything tonight except the permission to celebrate you. If this small surprise reaches your eyes and warms a corner of your smile, then it has done what I hoped for.
+You’re that quiet moment between heartbeats when everything feels right. You may not have accepted my love, but I still carry you like a prayer — without asking, without expecting, only hoping that you are smiling today.
 
-Happy birthday, Priye. — Always.`;
+On this birthday, I celebrate you — not just for who you are, but for what you’ve made me become.  
+More patient. More gentle. More real.
+
+Happy birthday, Priye.  
+— Yours, always in silence.`;
 
   // elements
   const giftWrap = document.getElementById("giftWrap");
@@ -43,7 +47,6 @@ Happy birthday, Priye. — Always.`;
   // open gift box
   giftWrap.addEventListener("click", () => {
     giftWrap.classList.add("open");
-    // small delay so lid animation can be seen, then show sequence
     setTimeout(() => {
       introSection.classList.add("hidden");
       seqSection.classList.remove("hidden");
@@ -58,7 +61,6 @@ Happy birthday, Priye. — Always.`;
     photoImg.src = photos[i].src;
     photoMsg.textContent = photos[i].msg;
     progressText.textContent = `${i + 1} / ${photos.length}`;
-    // If last photo, change button text to 'Open letter'
     if (i === photos.length - 1) {
       nextBtn.textContent = "Open the letter";
     } else {
@@ -70,7 +72,6 @@ Happy birthday, Priye. — Always.`;
     if (index < photos.length - 1) {
       showPhoto(index + 1);
     } else {
-      // finished photos -> show envelope area
       seqSection.classList.add("hidden");
       letterSection.classList.remove("hidden");
     }
@@ -79,17 +80,16 @@ Happy birthday, Priye. — Always.`;
   // envelope open -> show letter with typewriter effect
   envelopeWrap.addEventListener("click", () => {
     envelopeEl.classList.add("open");
-    // delay and reveal letter
     setTimeout(() => {
       letterCard.classList.remove("hidden");
       typeLetter(letterText);
     }, 500);
   });
 
-  // Typewriter (line-by-line nicer pacing)
+  // Typewriter animation
   function typeLetter(text) {
     letterTextEl.textContent = "";
-    const speed = 18; // ms per character
+    const speed = 18;
     let i = 0;
     const t = setInterval(() => {
       letterTextEl.textContent += text.charAt(i);
@@ -101,8 +101,4 @@ Happy birthday, Priye. — Always.`;
   replayLetter.addEventListener("click", () => {
     typeLetter(letterText);
   });
-
-  // initialize: hide sections (already hidden by HTML). But ensure letter text variable available
-  const letterText = letterText; // already defined above as constant
-
 })();
