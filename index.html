@@ -8,8 +8,19 @@
 </head>
 <body>
   <main class="page">
+
+    <!-- PASSWORD SECTION -->
+    <section id="passwordSection" class="center">
+      <div class="password-wrap">
+        <p class="hint">Enter the password to open your surprise 💝</p>
+        <input type="text" id="passwordInput" placeholder="Type password here" />
+        <button id="passwordBtn" class="btn">Unlock</button>
+        <p id="passwordError" class="muted" style="display:none;margin-top:8px;">Incorrect password. Try again.</p>
+      </div>
+    </section>
+
     <!-- Intro / Gift box -->
-    <section id="intro" class="center">
+    <section id="intro" class="center hidden">
       <div id="giftWrap" class="gift-wrap" role="button" aria-label="Open the gift">
         <div class="box">
           <div class="lid"></div>
