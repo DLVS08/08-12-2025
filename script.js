@@ -1,4 +1,22 @@
 (() => {
+  // PASSWORD
+  const passwordSection = document.getElementById("passwordSection");
+  const passwordInput = document.getElementById("passwordInput");
+  const passwordBtn = document.getElementById("passwordBtn");
+  const passwordError = document.getElementById("passwordError");
+  const correctPassword = "Angry bird";
+
+  passwordBtn.addEventListener("click", () => {
+    const entered = passwordInput.value.trim();
+    if(entered === correctPassword){
+      passwordSection.classList.add("hidden");
+      document.getElementById("intro").classList.remove("hidden");
+    } else {
+      passwordError.style.display = "block";
+    }
+  });
+
+  // CONFIG: photos & messages
   const photos = [
     { src: "assets/hero.jpg", msg: "Happy Birthday, my Priye — the day you were born, love learned how to breathe." },
     { src: "assets/gallery1.jpg", msg: "You’ve been my calm in chaos, and the reason my silence smiles." },
@@ -34,6 +52,7 @@ Happy birthday, Priye.
 
   let index = 0;
 
+  // open gift box
   giftWrap.addEventListener("click", () => {
     giftWrap.classList.add("open");
     setTimeout(() => {
