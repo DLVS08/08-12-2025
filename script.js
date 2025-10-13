@@ -9,11 +9,17 @@
   passwordBtn.addEventListener("click", () => {
     const entered = passwordInput.value.trim();
     if(entered === correctPassword){
-      passwordSection.classList.add("hidden");
+      passwordSection.style.display = "none";
       document.getElementById("intro").classList.remove("hidden");
+      passwordError.style.display = "none";
     } else {
       passwordError.style.display = "block";
     }
+  });
+
+  // Allow pressing Enter to submit
+  passwordInput.addEventListener("keydown", (e) => {
+    if(e.key === "Enter") passwordBtn.click();
   });
 
   // CONFIG: photos & messages
