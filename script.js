@@ -1,13 +1,4 @@
-/* script.js
-  Flow:
-  - click gift box -> open -> show first photo
-  - Next button -> cycles 4 photos with messages
-  - After 4th photo -> show envelope
-  - click envelope -> flap opens and letter types out
-*/
-
 (() => {
-  // CONFIG: your image paths and messages
   const photos = [
     { src: "assets/hero.jpg", msg: "Happy Birthday, my Priye — the day you were born, love learned how to breathe." },
     { src: "assets/gallery1.jpg", msg: "You’ve been my calm in chaos, and the reason my silence smiles." },
@@ -27,7 +18,6 @@ More patient. More gentle. More real.
 Happy birthday, Priye.  
 — Yours, always in silence.`;
 
-  // elements
   const giftWrap = document.getElementById("giftWrap");
   const introSection = document.getElementById("intro");
   const seqSection = document.getElementById("sequence");
@@ -44,7 +34,6 @@ Happy birthday, Priye.
 
   let index = 0;
 
-  // open gift box
   giftWrap.addEventListener("click", () => {
     giftWrap.classList.add("open");
     setTimeout(() => {
@@ -54,18 +43,13 @@ Happy birthday, Priye.
     }, 700);
   });
 
-  // show photo i
   function showPhoto(i) {
     if (i < 0 || i >= photos.length) return;
     index = i;
     photoImg.src = photos[i].src;
     photoMsg.textContent = photos[i].msg;
     progressText.textContent = `${i + 1} / ${photos.length}`;
-    if (i === photos.length - 1) {
-      nextBtn.textContent = "Open the letter";
-    } else {
-      nextBtn.textContent = "Next";
-    }
+    nextBtn.textContent = (i === photos.length - 1) ? "Open the letter" : "Next";
   }
 
   nextBtn.addEventListener("click", () => {
@@ -77,7 +61,6 @@ Happy birthday, Priye.
     }
   });
 
-  // envelope open -> show letter with typewriter effect
   envelopeWrap.addEventListener("click", () => {
     envelopeEl.classList.add("open");
     setTimeout(() => {
@@ -86,16 +69,14 @@ Happy birthday, Priye.
     }, 500);
   });
 
-  // Typewriter animation
   function typeLetter(text) {
     letterTextEl.textContent = "";
-    const speed = 18;
     let i = 0;
     const t = setInterval(() => {
       letterTextEl.textContent += text.charAt(i);
       i++;
       if (i >= text.length) clearInterval(t);
-    }, speed);
+    }, 18);
   }
 
   replayLetter.addEventListener("click", () => {
