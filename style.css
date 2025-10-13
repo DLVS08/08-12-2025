@@ -11,6 +11,10 @@ body,html{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe U
 .center{text-align:center}
 .muted{color:var(--muted);font-size:0.95rem}
 
+/* PASSWORD */
+.password-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;max-width:320px;margin:40px auto}
+#passwordInput{padding:10px 12px;border-radius:8px;border:1px solid #ccc;width:100%;font-size:1rem;text-align:center}
+
 /* INTRO / BOX */
 .gift-wrap{display:inline-flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer;user-select:none}
 .box{width:170px;height:140px;position:relative;transform-origin:center;transition:transform .7s ease}
