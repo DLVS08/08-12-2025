@@ -54,7 +54,7 @@ footer{margin-top:auto;padding:18px 6px;font-size:0.95rem}
 
 /* small screens */
 @media (max-width:640px){
-  .photo-card img{height:260px}
+  .photo-card img{height:460px}
   .box{width:140px;height:120px}
   .envelope{width:150px;height:100px}
 }
