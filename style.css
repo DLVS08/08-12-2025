@@ -30,7 +30,7 @@ body,html{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe U
 /* SEQUENCE */
 .hidden{display:none}
 .photo-card{max-width:760px;margin:18px auto;border-radius:12px;overflow:hidden;background:var(--card);box-shadow:0 10px 30px rgba(10,10,10,.06)}
-.photo-card img{width:100%;height:520px;object-fit:cover;display:block}
+.photo-card img{width:100%;height:100%;object-fit:cover;display:block}
 .photo-msg{padding:14px 18px;font-size:1.05rem;line-height:1.5;color:#222;background:linear-gradient(180deg,#fff,#fffef8)}
 
 /* CONTROLS */
@@ -54,7 +54,7 @@ footer{margin-top:auto;padding:18px 6px;font-size:0.95rem}
 
 /* small screens */
 @media (max-width:640px){
-  .photo-card img{height:460px}
+  .photo-card img{height:100%}
   .box{width:140px;height:120px}
   .envelope{width:150px;height:100px}
 }
