@@ -109,30 +109,73 @@ Happy birthday, Priye.
     envelopeWrap.classList.add("open");
     setTimeout(() => {
       letterCard.classList.remove("hidden");
-      letterTextEl.textContent = letterText;
+      typeLetter(letterText);
     }, 600);
   });
 
   replayLetter.addEventListener("click", () => {
-    letterCard.classList.add("hidden");
-    setTimeout(() => {
-      letterCard.classList.remove("hidden");
-      letterTextEl.textContent = letterText;
-    }, 100);
+    letterTextEl.textContent = "";
+    typeLetter(letterText);
   });
 
   // =====================
-  // CROP EDITOR SECRET KEY: Shift+P+S
+  // TYPE LETTER ANIMATION
+  // =====================
+  function typeLetter(text){
+    letterTextEl.textContent = "";
+    let i=0;
+    const interval = setInterval(() => {
+      letterTextEl.textContent += text.charAt(i);
+      i++;
+      if(i>=text.length) clearInterval(interval);
+    }, 25);
+  }
+
+  // =====================
+  // CROP EDITOR SHIFT+P+S
   // =====================
   let keys = {};
   document.addEventListener("keydown", e => {
     keys[e.key] = true;
     if(keys['Shift'] && keys['P'] && keys['S']){
       cropEditor.classList.toggle("hidden");
+      if(!cropEditor.classList.contains("hidden")){
+        cropBox.style.width = "150px";
+        cropBox.style.height = "150px";
+        cropBox.style.left = "20px";
+        cropBox.style.top = "20px";
+      }
       keys = {};
     }
   });
   document.addEventListener("keyup", e => { keys[e.key] = false; });
 
-  // TODO: add cropBox drag, resize, apply logic if needed
+  // =====================
+  // DRAG & RESIZE CROP BOX
+  // =====================
+  let isDragging = false, dragStartX, dragStartY, boxStartX, boxStartY;
+  cropBox.addEventListener("mousedown", e => {
+    isDragging = true;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    boxStartX = parseInt(cropBox.style.left);
+    boxStartY = parseInt(cropBox.style.top);
+  });
+  document.addEventListener("mousemove", e => {
+    if(isDragging){
+      let dx = e.clientX - dragStartX;
+      let dy = e.clientY - dragStartY;
+      cropBox.style.left = `${boxStartX + dx}px`;
+      cropBox.style.top = `${boxStartY + dy}px`;
+    }
+  });
+  document.addEventListener("mouseup", () => { isDragging = false; });
+
+  cropApply.addEventListener("click", () => {
+    cropBox.style.width = cropWidth.value ? `${cropWidth.value}px` : cropBox.style.width;
+    cropBox.style.height = cropHeight.value ? `${cropHeight.value}px` : cropBox.style.height;
+    cropBox.style.left = cropX.value ? `${cropX.value}px` : cropBox.style.left;
+    cropBox.style.top = cropY.value ? `${cropY.value}px` : cropBox.style.top;
+  });
+  cropClose.addEventListener("click", () => { cropEditor.classList.add("hidden"); });
 })();
