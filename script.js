@@ -12,15 +12,9 @@
       passwordSection.style.display = "none";
       document.getElementById("intro").classList.remove("hidden");
       passwordError.style.display = "none";
-    } else {
-      passwordError.style.display = "block";
-    }
+    } else { passwordError.style.display = "block"; }
   });
-
-  // Allow pressing Enter to submit
-  passwordInput.addEventListener("keydown", (e) => {
-    if(e.key === "Enter") passwordBtn.click();
-  });
+  passwordInput.addEventListener("keydown", (e) => { if(e.key === "Enter") passwordBtn.click(); });
 
   // CONFIG: photos & messages
   const photos = [
@@ -104,7 +98,70 @@ Happy birthday, Priye.
     }, 18);
   }
 
-  replayLetter.addEventListener("click", () => {
-    typeLetter(letterText);
+  replayLetter.addEventListener("click", () => { typeLetter(letterText); });
+
+  // =====================
+  // PHOTO CROP EDITOR LOGIC
+  // =====================
+  const cropEditor = document.getElementById("cropEditor");
+  const cropBox = document.getElementById("cropBox");
+  const cropWidthInp = document.getElementById("cropWidth");
+  const cropHeightInp = document.getElementById("cropHeight");
+  const cropXInp = document.getElementById("cropX");
+  const cropYInp = document.getElementById("cropY");
+  const cropApply = document.getElementById("cropApply");
+  const cropClose = document.getElementById("cropClose");
+
+  let cropData = { x:0, y:0, w:photoImg.clientWidth, h:photoImg.clientHeight };
+
+  function updateCropBox(){
+    cropBox.style.width = cropData.w + "px";
+    cropBox.style.height = cropData.h + "px";
+    cropBox.style.left = cropData.x + "px";
+    cropBox.style.top = cropData.y + "px";
+    cropWidthInp.value = cropData.w;
+    cropHeightInp.value = cropData.h;
+    cropXInp.value = Math.round((cropData.x/photoImg.clientWidth)*100);
+    cropYInp.value = Math.round((cropData.y/photoImg.clientHeight)*100);
+  }
+
+  // Trigger editor: Shift+P+S
+  let keysPressed = {};
+  document.addEventListener("keydown", (e)=>{
+    keysPressed[e.key.toLowerCase()] = true;
+    if(keysPressed["shift"] && keysPressed["p"] && keysPressed["s"]){
+      cropEditor.classList.toggle("hidden");
+      // initialize box
+      cropData = { x:0, y:0, w:photoImg.clientWidth, h:photoImg.clientHeight };
+      updateCropBox();
+    }
   });
+  document.addEventListener("keyup",(e)=>{ keysPressed[e.key.toLowerCase()]=false; });
+
+  // Make crop box draggable
+  let dragging = false, offsetX=0, offsetY=0;
+  cropBox.addEventListener("mousedown",(e)=>{
+    dragging=true;
+    offsetX = e.offsetX;
+    offsetY = e.offsetY;
+  });
+  document.addEventListener("mousemove",(e)=>{
+    if(!dragging) return;
+    const rect = cropBox.parentElement.getBoundingClientRect();
+    cropData.x = Math.max(0, Math.min(rect.width - cropData.w, e.clientX - rect.left - offsetX));
+    cropData.y = Math.max(0, Math.min(rect.height - cropData.h, e.clientY - rect.top - offsetY));
+    updateCropBox();
+  });
+  document.addEventListener("mouseup",()=>{ dragging=false; });
+
+  // Apply button
+  cropApply.addEventListener("click", ()=>{
+    const Xpercent = Math.min(100, Math.max(0, cropXInp.value));
+    const Ypercent = Math.min(100, Math.max(0, cropYInp.value));
+    photoImg.style.objectPosition = `${Xpercent}% ${Ypercent}%`;
+    photoImg.style.width = cropWidthInp.value + "px";
+    photoImg.style.height = cropHeightInp.value + "px";
+  });
+  // Close editor
+  cropClose.addEventListener("click", ()=>{ cropEditor.classList.add("hidden"); });
 })();
