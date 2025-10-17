@@ -44,6 +44,19 @@
       <div class="progress" aria-hidden="true">
         <span id="progressText">1 / 4</span>
       </div>
+
+      <!-- Crop Editor Overlay (hidden by default) -->
+      <div id="cropEditor" class="crop-editor hidden">
+        <div id="cropBox" class="crop-box"></div>
+        <div class="crop-values">
+          <label>Width: <input type="number" id="cropWidth" /> px</label>
+          <label>Height: <input type="number" id="cropHeight" /> px</label>
+          <label>X (%): <input type="number" id="cropX" min="0" max="100" /></label>
+          <label>Y (%): <input type="number" id="cropY" min="0" max="100" /></label>
+        </div>
+        <button id="cropApply" class="btn">Apply</button>
+        <button id="cropClose" class="btn outline">Close Editor</button>
+      </div>
     </section>
 
     <!-- Final envelope & letter -->
