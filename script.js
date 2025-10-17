@@ -1,7 +1,5 @@
 (() => {
-  // =====================
   // PASSWORD
-  // =====================
   const passwordSection = document.getElementById("passwordSection");
   const passwordInput = document.getElementById("passwordInput");
   const passwordBtn = document.getElementById("passwordBtn");
@@ -18,164 +16,182 @@
       passwordError.style.display = "block";
     }
   });
+  passwordInput.addEventListener("keydown", e => { if(e.key==="Enter") passwordBtn.click(); });
 
-  passwordInput.addEventListener("keydown", (e) => {
-    if(e.key === "Enter") passwordBtn.click();
-  });
-
-  // =====================
-  // PHOTOS & MESSAGES
-  // =====================
+  // PHOTOS
   const photos = [
-    { src: "assets/hero.jpg", msg: "Happy Birthday, my Priye — the day you were born, love learned how to breathe." },
-    { src: "assets/gallery1.jpg", msg: "You’ve been my calm in chaos, and the reason my silence smiles." },
-    { src: "assets/gallery2.jpg", msg: "If I could gift you one thing today, it would be the way my heart sees you." },
-    { src: "assets/gallery3.jpg", msg: "No wish could ever match the one I make for you — always, your happiness." }
+    { src:"assets/hero.jpg", msg:"Happy Birthday, my Priye — the day you were born, love learned how to breathe.", w:400,h:300,x:0,y:0 },
+    { src:"assets/gallery1.jpg", msg:"You’ve been my calm in chaos, and the reason my silence smiles.", w:400,h:300,x:0,y:0 },
+    { src:"assets/gallery2.jpg", msg:"If I could gift you one thing today, it would be the way my heart sees you.", w:400,h:300,x:0,y:0 },
+    { src:"assets/gallery3.jpg", msg:"No wish could ever match the one I make for you — always, your happiness.", w:400,h:300,x:0,y:0 }
   ];
 
   const letterText = `Madam Ji,
 
 I don’t know if words can ever reach the place you hold in me, but I wanted this to be something you can feel — not just read.
 
-You’re that quiet moment between heartbeats when everything feels right. You may not have accepted my love, but I still carry you like a prayer — without asking, without expecting, only hoping that you are smiling today.
+You’re that rare calm that even storms respect. Happy Birthday.
 
-On this birthday, I celebrate you — not just for who you are, but for what you’ve made me become.  
-More patient. More gentle. More real.
+— Yours.`;
 
-Happy birthday, Priye.  
-— Yours, always in silence.`;
-
-  // =====================
-  // ELEMENTS
-  // =====================
-  const giftWrap = document.getElementById("giftWrap");
-  const seqSection = document.getElementById("sequence");
+  let photoIndex = 0;
+  const sequence = document.getElementById("sequence");
   const photoImg = document.getElementById("photoImg");
   const photoMsg = document.getElementById("photoMsg");
   const nextBtn = document.getElementById("nextBtn");
   const progressText = document.getElementById("progressText");
+
   const cropEditor = document.getElementById("cropEditor");
-  const cropBox = document.getElementById("cropBox");
+  const cropPhotoSelect = document.getElementById("cropPhotoSelect");
   const cropWidth = document.getElementById("cropWidth");
   const cropHeight = document.getElementById("cropHeight");
   const cropX = document.getElementById("cropX");
   const cropY = document.getElementById("cropY");
   const cropApply = document.getElementById("cropApply");
   const cropClose = document.getElementById("cropClose");
-  const letterSection = document.getElementById("letterSection");
+  const cropBox = document.getElementById("cropBox");
+
+  function updatePhotoPreview(){
+    const p = photos[photoIndex];
+    photoImg.src = p.src;
+    photoMsg.textContent = "";
+    animateText(photoMsg,p.msg);
+    progressText.textContent = `${photoIndex+1} / ${photos.length}`;
+
+    // Update crop inputs for this photo
+    cropWidth.value = p.w;
+    cropHeight.value = p.h;
+    cropX.value = p.x;
+    cropY.value = p.y;
+
+    applyCropBox(p);
+  }
+
+  nextBtn.addEventListener("click",()=>{
+    photoIndex++;
+    if(photoIndex>=photos.length){
+      sequence.classList.add("hidden");
+      document.getElementById("letterSection").classList.remove("hidden");
+      return;
+    }
+    updatePhotoPreview();
+  });
+
+  // Typing animation
+  function animateText(el,text){
+    el.textContent="";
+    let i=0;
+    function step(){
+      if(i<text.length){
+        el.textContent += text[i++];
+        setTimeout(step,45);
+      }
+    }
+    step();
+  }
+
+  // CROP EDITOR TOGGLE
+  document.addEventListener("keydown",(e)=>{
+    if(e.shiftKey && e.code==="KeyP"){
+      document.addEventListener("keydown",handler);
+    }
+  });
+  function handler(e){
+    if(e.shiftKey && e.code==="KeyS"){
+      cropEditor.classList.toggle("hidden");
+    }
+    document.removeEventListener("keydown",handler);
+  }
+
+  // Apply crop
+  function applyCropBox(p){
+    cropBox.style.width = p.w + "px";
+    cropBox.style.height = p.h + "px";
+    cropBox.style.left = p.x + "px";
+    cropBox.style.top = p.y + "px";
+  }
+
+  cropApply.addEventListener("click",()=>{
+    const idx = parseInt(cropPhotoSelect.value);
+    const p = photos[idx];
+    p.w = parseInt(cropWidth.value);
+    p.h = parseInt(cropHeight.value);
+    p.x = parseInt(cropX.value);
+    p.y = parseInt(cropY.value);
+
+    if(idx===photoIndex){
+      applyCropBox(p);
+    }
+  });
+
+  cropPhotoSelect.addEventListener("change",()=>{
+    const idx = parseInt(cropPhotoSelect.value);
+    const p = photos[idx];
+    cropWidth.value = p.w;
+    cropHeight.value = p.h;
+    cropX.value = p.x;
+    cropY.value = p.y;
+    applyCropBox(p);
+  });
+
+  cropClose.addEventListener("click",()=>{ cropEditor.classList.add("hidden"); });
+
+  // Drag crop box
+  let drag=false,offsetX=0,offsetY=0;
+  cropBox.addEventListener("mousedown",e=>{
+    drag=true;
+    offsetX = e.offsetX;
+    offsetY = e.offsetY;
+  });
+  document.addEventListener("mousemove",e=>{
+    if(drag){
+      const p = photos[parseInt(cropPhotoSelect.value)];
+      let left = e.clientX - offsetX - photoImg.getBoundingClientRect().left;
+      let top = e.clientY - offsetY - photoImg.getBoundingClientRect().top;
+      if(left<0) left=0;
+      if(top<0) top=0;
+      if(left+p.w>photoImg.width) left=photoImg.width-p.w;
+      if(top+p.h>photoImg.height) top=photoImg.height-p.h;
+      cropBox.style.left = left+"px";
+      cropBox.style.top = top+"px";
+      cropX.value = Math.round(left);
+      cropY.value = Math.round(top);
+      p.x = Math.round(left);
+      p.y = Math.round(top);
+    }
+  });
+  document.addEventListener("mouseup",()=>{ drag=false; });
+
+  // Initialize first photo
+  document.getElementById("intro").addEventListener("click",()=>{
+    document.getElementById("intro").classList.add("hidden");
+    sequence.classList.remove("hidden");
+    updatePhotoPreview();
+  });
+
+  // LETTER
   const envelopeWrap = document.getElementById("envelopeWrap");
   const letterCard = document.getElementById("letterCard");
   const letterTextEl = document.getElementById("letterText");
   const replayLetter = document.getElementById("replayLetter");
 
-  let currentPhoto = 0;
-
-  // =====================
-  // GIFT BOX CLICK
-  // =====================
-  giftWrap.addEventListener("click", () => {
-    giftWrap.classList.add("open");
-    setTimeout(() => {
-      document.getElementById("intro").classList.add("hidden");
-      seqSection.classList.remove("hidden");
-      showPhoto(currentPhoto);
-    }, 1200);
+  envelopeWrap.addEventListener("click",()=>{
+    envelopeWrap.querySelector(".envelope").classList.add("open");
+    letterCard.classList.remove("hidden");
+    showLetterText();
   });
 
-  // =====================
-  // SHOW PHOTO
-  // =====================
-  function showPhoto(index){
-    const p = photos[index];
-    photoImg.src = p.src;
-    photoMsg.textContent = p.msg;
-    progressText.textContent = `${index+1} / ${photos.length}`;
-  }
-
-  nextBtn.addEventListener("click", () => {
-    currentPhoto++;
-    if(currentPhoto >= photos.length){
-      seqSection.classList.add("hidden");
-      letterSection.classList.remove("hidden");
-    } else {
-      showPhoto(currentPhoto);
-    }
-  });
-
-  // =====================
-  // ENVELOPE CLICK
-  // =====================
-  envelopeWrap.addEventListener("click", () => {
-    envelopeWrap.classList.add("open");
-    setTimeout(() => {
-      letterCard.classList.remove("hidden");
-      typeLetter(letterText);
-    }, 600);
-  });
-
-  replayLetter.addEventListener("click", () => {
-    letterTextEl.textContent = "";
-    typeLetter(letterText);
-  });
-
-  // =====================
-  // TYPE LETTER ANIMATION
-  // =====================
-  function typeLetter(text){
+  function showLetterText(){
     letterTextEl.textContent = "";
     let i=0;
-    const interval = setInterval(() => {
-      letterTextEl.textContent += text.charAt(i);
-      i++;
-      if(i>=text.length) clearInterval(interval);
-    }, 25);
+    function step(){
+      if(i<letterText.length){
+        letterTextEl.textContent += letterText[i++];
+        setTimeout(step,35);
+      }
+    }
+    step();
   }
 
-  // =====================
-  // CROP EDITOR SHIFT+P+S
-  // =====================
-  let keys = {};
-  document.addEventListener("keydown", e => {
-    keys[e.key] = true;
-    if(keys['Shift'] && keys['P'] && keys['S']){
-      cropEditor.classList.toggle("hidden");
-      if(!cropEditor.classList.contains("hidden")){
-        cropBox.style.width = "150px";
-        cropBox.style.height = "150px";
-        cropBox.style.left = "20px";
-        cropBox.style.top = "20px";
-      }
-      keys = {};
-    }
-  });
-  document.addEventListener("keyup", e => { keys[e.key] = false; });
-
-  // =====================
-  // DRAG & RESIZE CROP BOX
-  // =====================
-  let isDragging = false, dragStartX, dragStartY, boxStartX, boxStartY;
-  cropBox.addEventListener("mousedown", e => {
-    isDragging = true;
-    dragStartX = e.clientX;
-    dragStartY = e.clientY;
-    boxStartX = parseInt(cropBox.style.left);
-    boxStartY = parseInt(cropBox.style.top);
-  });
-  document.addEventListener("mousemove", e => {
-    if(isDragging){
-      let dx = e.clientX - dragStartX;
-      let dy = e.clientY - dragStartY;
-      cropBox.style.left = `${boxStartX + dx}px`;
-      cropBox.style.top = `${boxStartY + dy}px`;
-    }
-  });
-  document.addEventListener("mouseup", () => { isDragging = false; });
-
-  cropApply.addEventListener("click", () => {
-    cropBox.style.width = cropWidth.value ? `${cropWidth.value}px` : cropBox.style.width;
-    cropBox.style.height = cropHeight.value ? `${cropHeight.value}px` : cropBox.style.height;
-    cropBox.style.left = cropX.value ? `${cropX.value}px` : cropBox.style.left;
-    cropBox.style.top = cropY.value ? `${cropY.value}px` : cropBox.style.top;
-  });
-  cropClose.addEventListener("click", () => { cropEditor.classList.add("hidden"); });
+  replayLetter.addEventListener("click",()=>{ showLetterText(); });
 })();
