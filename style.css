@@ -51,11 +51,12 @@ body,html{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe U
 
 /* CROP EDITOR */
 #cropEditor input{width:70px;padding:6px 8px;border:1px solid #ccc;border-radius:6px;font-size:0.9rem;text-align:center}
+#cropBox{touch-action:none;}
 
 /* FOOTER */
 footer{margin-top:auto;padding:18px 6px;font-size:0.95rem}
 
-/* small screens */
+/* SMALL SCREENS */
 @media (max-width:640px){
   .photo-card img{height:100%}
   .box{width:140px;height:120px}
