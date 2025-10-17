@@ -33,9 +33,22 @@
 
     <!-- Photo sequence -->
     <section id="sequence" class="center hidden">
-      <div class="photo-card">
+      <div class="photo-card" style="position:relative;">
         <img id="photoImg" src="" alt="photo" />
         <div id="photoMsg" class="photo-msg"></div>
+      </div>
+
+      <!-- Photo crop editor -->
+      <div id="cropEditor" class="hidden" style="position:relative;max-width:760px;margin:12px auto;background:#f7f7f7;padding:10px;border-radius:8px;">
+        <div id="cropBox" style="position:absolute;top:0;left:0;border:2px dashed var(--accent);background:rgba(255,123,156,0.2);"></div>
+        <div style="margin-top:180px;text-align:center;display:flex;gap:8px;flex-wrap:wrap;">
+          <input id="cropWidth" type="number" placeholder="Width px"/>
+          <input id="cropHeight" type="number" placeholder="Height px"/>
+          <input id="cropX" type="number" placeholder="X %"/>
+          <input id="cropY" type="number" placeholder="Y %"/>
+          <button id="cropApply" class="btn">Apply</button>
+          <button id="cropClose" class="btn outline">Close</button>
+        </div>
       </div>
 
       <div class="controls">
@@ -43,19 +56,6 @@
       </div>
       <div class="progress" aria-hidden="true">
         <span id="progressText">1 / 4</span>
-      </div>
-
-      <!-- Crop Editor Overlay (hidden by default) -->
-      <div id="cropEditor" class="crop-editor hidden">
-        <div id="cropBox" class="crop-box"></div>
-        <div class="crop-values">
-          <label>Width: <input type="number" id="cropWidth" /> px</label>
-          <label>Height: <input type="number" id="cropHeight" /> px</label>
-          <label>X (%): <input type="number" id="cropX" min="0" max="100" /></label>
-          <label>Y (%): <input type="number" id="cropY" min="0" max="100" /></label>
-        </div>
-        <button id="cropApply" class="btn">Apply</button>
-        <button id="cropClose" class="btn outline">Close Editor</button>
       </div>
     </section>
 
