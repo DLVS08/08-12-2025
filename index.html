@@ -33,22 +33,14 @@
 
     <!-- Photo sequence -->
     <section id="sequence" class="center hidden">
-      <div class="photo-card">
+      <div class="photo-card" id="photoContainer">
         <img id="photoImg" src="" alt="photo" />
         <div id="photoMsg" class="photo-msg"></div>
       </div>
 
-      <div class="controls">
-        <button id="nextBtn" class="btn">Next</button>
-      </div>
-      <div class="progress" aria-hidden="true">
-        <span id="progressText">1 / 4</span>
-      </div>
-
-      <!-- Crop Editor -->
-      <div id="cropEditor" class="crop-editor hidden">
-        <label>
-          Select Photo:
+      <!-- Crop editor overlay -->
+      <div id="cropEditor" class="hidden">
+        <label>Photo:
           <select id="cropPhotoSelect">
             <option value="0">Hero</option>
             <option value="1">Gallery 1</option>
@@ -56,13 +48,18 @@
             <option value="3">Gallery 3</option>
           </select>
         </label>
-        <label>Width (px): <input type="number" id="cropWidth" /></label>
-        <label>Height (px): <input type="number" id="cropHeight" /></label>
-        <label>Left (px): <input type="number" id="cropX" /></label>
-        <label>Top (px): <input type="number" id="cropY" /></label>
-        <button id="cropApply" class="btn">Apply to Preview</button>
+        <label>Width: <input type="number" id="cropWidth" /> px</label>
+        <label>Height: <input type="number" id="cropHeight" /> px</label>
+        <button id="cropApply" class="btn">Apply</button>
         <button id="cropClose" class="btn outline">Close Editor</button>
         <div id="cropBox"></div>
+      </div>
+
+      <div class="controls">
+        <button id="nextBtn" class="btn">Next</button>
+      </div>
+      <div class="progress" aria-hidden="true">
+        <span id="progressText">1 / 4</span>
       </div>
     </section>
 
