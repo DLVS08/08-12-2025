@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>08-12-2025 — A Small Surprise</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -19,7 +19,7 @@
       </div>
     </section>
 
-    <!-- INTRO / GIFT BOX -->
+    <!-- Intro / Gift box -->
     <section id="intro" class="center hidden">
       <div id="giftWrap" class="gift-wrap" role="button" aria-label="Open the gift">
         <div class="box">
@@ -31,24 +31,11 @@
       </div>
     </section>
 
-    <!-- PHOTO SEQUENCE -->
+    <!-- Photo sequence -->
     <section id="sequence" class="center hidden">
-      <div class="photo-card" style="position:relative;">
+      <div class="photo-card">
         <img id="photoImg" src="" alt="photo" />
         <div id="photoMsg" class="photo-msg"></div>
-      </div>
-
-      <!-- PHOTO CROP EDITOR -->
-      <div id="cropEditor" class="hidden" style="position:relative;max-width:760px;margin:12px auto;background:#f7f7f7;padding:10px;border-radius:8px;">
-        <div id="cropBox" style="position:absolute;top:0;left:0;border:2px dashed var(--accent);background:rgba(255,123,156,0.2);touch-action:none;"></div>
-        <div style="margin-top:180px;text-align:center;display:flex;gap:8px;flex-wrap:wrap;">
-          <input id="cropWidth" type="number" placeholder="Width px"/>
-          <input id="cropHeight" type="number" placeholder="Height px"/>
-          <input id="cropX" type="number" placeholder="X %"/>
-          <input id="cropY" type="number" placeholder="Y %"/>
-          <button id="cropApply" class="btn">Apply</button>
-          <button id="cropClose" class="btn outline">Close</button>
-        </div>
       </div>
 
       <div class="controls">
@@ -57,9 +44,29 @@
       <div class="progress" aria-hidden="true">
         <span id="progressText">1 / 4</span>
       </div>
+
+      <!-- Crop Editor -->
+      <div id="cropEditor" class="crop-editor hidden">
+        <label>
+          Select Photo:
+          <select id="cropPhotoSelect">
+            <option value="0">Hero</option>
+            <option value="1">Gallery 1</option>
+            <option value="2">Gallery 2</option>
+            <option value="3">Gallery 3</option>
+          </select>
+        </label>
+        <label>Width (px): <input type="number" id="cropWidth" /></label>
+        <label>Height (px): <input type="number" id="cropHeight" /></label>
+        <label>Left (px): <input type="number" id="cropX" /></label>
+        <label>Top (px): <input type="number" id="cropY" /></label>
+        <button id="cropApply" class="btn">Apply to Preview</button>
+        <button id="cropClose" class="btn outline">Close Editor</button>
+        <div id="cropBox"></div>
+      </div>
     </section>
 
-    <!-- LETTER SECTION -->
+    <!-- Final envelope & letter -->
     <section id="letterSection" class="center hidden">
       <div id="envelopeWrap" class="envelope-wrap" role="button" aria-label="Open the letter">
         <div class="envelope">
