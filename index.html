@@ -1,90 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>08-12-2025 — A Small Surprise</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>08-12-2025 — A Small Surprise</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="page">
+<main class="page">
+<section id="passwordSection" class="center">
+  <div class="password-wrap">
+    <p class="hint">Enter the password to open your surprise 💝</p>
+    <input type="text" id="passwordInput" placeholder="Type password here">
+    <button id="passwordBtn" class="btn">Unlock</button>
+    <p id="passwordError" class="muted" style="display:none;margin-top:8px;">Incorrect password. Try again.</p>
+  </div>
+</section>
 
-    <!-- PASSWORD SECTION -->
-    <section id="passwordSection" class="center">
-      <div class="password-wrap">
-        <p class="hint">Enter the password to open your surprise 💝</p>
-        <input type="text" id="passwordInput" placeholder="Type password here" />
-        <button type="button" id="passwordBtn" class="btn">Unlock</button>
-        <p id="passwordError" class="muted" style="display:none;margin-top:8px;">Incorrect password. Try again.</p>
-      </div>
-    </section>
+<section id="intro" class="center hidden">
+  <div id="giftWrap" class="gift-wrap" role="button" aria-label="Open the gift">
+    <div class="box">
+      <div class="lid"></div>
+      <div class="body"></div>
+      <div class="ribbon"></div>
+    </div>
+    <p class="hint">Tap the box to open your surprise, Madam Ji 💝</p>
+  </div>
+</section>
 
-    <!-- Intro / Gift box -->
-    <section id="intro" class="center hidden">
-      <div id="giftWrap" class="gift-wrap" role="button" aria-label="Open the gift">
-        <div class="box">
-          <div class="lid"></div>
-          <div class="body"></div>
-          <div class="ribbon"></div>
-        </div>
-        <p class="hint">Tap the box to open your surprise, Madam Ji 💝</p>
-      </div>
-    </section>
+<section id="sequence" class="center hidden">
+  <div class="photo-card">
+    <img id="photoImg" src="" alt="photo">
+    <div id="photoMsg" class="photo-msg"></div>
+  </div>
+  <div class="controls">
+    <button id="nextBtn" class="btn">Next</button>
+  </div>
+  <div class="progress" aria-hidden="true">
+    <span id="progressText">1 / 4</span>
+  </div>
+</section>
 
-    <!-- Photo sequence -->
-    <section id="sequence" class="center hidden">
-      <div class="photo-card">
-        <img id="photoImg" src="" alt="photo" />
-        <div id="photoMsg" class="photo-msg"></div>
-      </div>
+<section id="letterSection" class="center hidden">
+  <div id="envelopeWrap" class="envelope-wrap" role="button" aria-label="Open the letter">
+    <div class="envelope">
+      <div class="flap"></div>
+      <div class="paper"></div>
+    </div>
+    <p class="hint">Tap the envelope to read my letter</p>
+  </div>
 
-      <!-- Crop Editor (hidden by default, triggered by Shift+P+S) -->
-      <div id="cropEditor" class="crop-editor hidden">
-        <p>Select Photo: 
-          <select id="cropPhotoSelect">
-            <option value="0">Hero</option>
-            <option value="1">Gallery 1</option>
-            <option value="2">Gallery 2</option>
-            <option value="3">Gallery 3</option>
-          </select>
-        </p>
-        <p>Width: <input type="number" id="cropWidth" /> px</p>
-        <p>Height: <input type="number" id="cropHeight" /> px</p>
-        <button id="cropApply" class="btn">Apply</button>
-        <button id="cropClose" class="btn outline">Close</button>
-        <div id="cropBox" class="crop-box"></div>
-      </div>
+  <div id="letterCard" class="letter-card hidden">
+    <h2>A Letter For You</h2>
+    <div id="letterText" class="letter-text"></div>
+    <div class="actions">
+      <button id="replayLetter" class="btn outline">Replay Letter</button>
+    </div>
+  </div>
+</section>
 
-      <div class="controls">
-        <button id="nextBtn" class="btn">Next</button>
-      </div>
-      <div class="progress" aria-hidden="true">
-        <span id="progressText">1 / 4</span>
-      </div>
-    </section>
-
-    <!-- Final envelope & letter -->
-    <section id="letterSection" class="center hidden">
-      <div id="envelopeWrap" class="envelope-wrap" role="button" aria-label="Open the letter">
-        <div class="envelope">
-          <div class="flap"></div>
-          <div class="paper"></div>
-        </div>
-        <p class="hint">Tap the envelope to read my letter</p>
-      </div>
-
-      <div id="letterCard" class="letter-card hidden">
-        <h2>A Letter For You</h2>
-        <div id="letterText" class="letter-text"></div>
-        <div class="actions">
-          <button id="replayLetter" class="btn outline">Replay Letter</button>
-        </div>
-      </div>
-    </section>
-
-    <footer class="center muted">With quiet courage — Yours.</footer>
-  </main>
-
-  <script src="script.js"></script>
+<footer class="center muted">With quiet courage — Yours.</footer>
+</main>
+<script src="script.js"></script>
 </body>
 </html>
