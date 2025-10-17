@@ -33,26 +33,26 @@
 
     <!-- Photo sequence -->
     <section id="sequence" class="center hidden">
-      <div class="photo-card" id="photoContainer">
+      <div class="photo-card">
         <img id="photoImg" src="" alt="photo" />
         <div id="photoMsg" class="photo-msg"></div>
       </div>
 
-      <!-- Crop editor overlay -->
-      <div id="cropEditor" class="hidden">
-        <label>Photo:
+      <!-- Crop Editor (hidden by default, triggered by Shift+P+S) -->
+      <div id="cropEditor" class="crop-editor hidden">
+        <p>Select Photo: 
           <select id="cropPhotoSelect">
             <option value="0">Hero</option>
             <option value="1">Gallery 1</option>
             <option value="2">Gallery 2</option>
             <option value="3">Gallery 3</option>
           </select>
-        </label>
-        <label>Width: <input type="number" id="cropWidth" /> px</label>
-        <label>Height: <input type="number" id="cropHeight" /> px</label>
+        </p>
+        <p>Width: <input type="number" id="cropWidth" /> px</p>
+        <p>Height: <input type="number" id="cropHeight" /> px</p>
         <button id="cropApply" class="btn">Apply</button>
-        <button id="cropClose" class="btn outline">Close Editor</button>
-        <div id="cropBox"></div>
+        <button id="cropClose" class="btn outline">Close</button>
+        <div id="cropBox" class="crop-box"></div>
       </div>
 
       <div class="controls">
