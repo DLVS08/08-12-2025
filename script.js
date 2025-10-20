@@ -109,9 +109,13 @@ Happy birthday, Priye.
   replayLetter.addEventListener("click", () => typeLetter(letterText));
 
   // ===== CROP EDITOR =====
-  let cropBox = document.getElementById("cropBox");
   const cropPreview = document.getElementById("cropPreview");
   const cropData = JSON.parse(localStorage.getItem("cropData") || "{}");
+  let cropBox = null;
+  let cropMode = false;
+  let dragging = false, resizing = false;
+  let dragStartX, dragStartY, dragStartLeft, dragStartTop;
+  let resizeStartX, resizeStartY, resizeStartW, resizeStartH;
 
   function restoreCrop(i) {
     const data = cropData[i];
@@ -124,7 +128,6 @@ Happy birthday, Priye.
     }
   }
 
-  // CREATE OR SHOW CROP BOX
   function ensureCropBox() {
     if (!cropBox) {
       cropBox = document.createElement("div");
@@ -167,8 +170,7 @@ Happy birthday, Priye.
     }
   }
 
-  // ===== DRAGGING =====
-  let dragStartX, dragStartY, dragStartLeft, dragStartTop;
+  // ===== DRAG =====
   function startDrag(e) {
     e.preventDefault();
     ensureCropBox();
@@ -183,7 +185,6 @@ Happy birthday, Priye.
     window.addEventListener("touchend", endDrag);
   }
 
-  let dragging = false;
   function onDrag(e) {
     if (!dragging) return;
     e.preventDefault();
@@ -202,12 +203,9 @@ Happy birthday, Priye.
     cropBox.style.top = newTop + "px";
   }
 
-  function endDrag() {
-    dragging = false;
-  }
+  function endDrag() { dragging = false; }
 
-  // ===== RESIZING =====
-  let resizing = false, resizeStartX, resizeStartY, resizeStartW, resizeStartH;
+  // ===== RESIZE =====
   function startResize(e) {
     e.stopPropagation();
     e.preventDefault();
@@ -238,14 +236,11 @@ Happy birthday, Priye.
     cropBox.style.height = newH + "px";
   }
 
-  function endResize() {
-    resizing = false;
-  }
+  function endResize() { resizing = false; }
 
   // ===== SAVE CROP =====
   function saveCrop() {
     if (!cropBox) return;
-    const imgRect = photoImg.getBoundingClientRect();
     const previewRect = cropPreview.getBoundingClientRect();
     const boxRect = cropBox.getBoundingClientRect();
 
@@ -260,14 +255,19 @@ Happy birthday, Priye.
     alert("Crop saved for this photo!");
   }
 
-  // ===== TOGGLE CROP EDITOR =====
-  let cropMode = false;
+  // ===== TOGGLE CROP MODE =====
   function toggleCropMode() {
     cropMode = !cropMode;
-    if (cropMode) ensureCropBox();
-    else { if(cropBox) cropBox.remove(); cropBox=null; }
+    if (cropMode) {
+      ensureCropBox();
+      cropBox.style.display = "flex"; // make visible
+    } else {
+      if(cropBox) cropBox.remove();
+      cropBox = null;
+    }
   }
 
+  // ===== KEYBOARD SHORTCUT =====
   let pressedKeys = new Set();
   window.addEventListener("keydown", e => {
     pressedKeys.add(e.key.toLowerCase());
@@ -275,6 +275,7 @@ Happy birthday, Priye.
       toggleCropMode();
     }
   });
+
   window.addEventListener("keyup", e => pressedKeys.delete(e.key.toLowerCase()));
 
 })();
