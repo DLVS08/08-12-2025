@@ -141,7 +141,7 @@ Happy birthday, Priye.
     cropBox.style.zIndex = "9999";
     cropBox.style.top = "20%";
     cropBox.style.left = "20%";
-    cropBox.style.width = "60%";
+    cropBox.style.width = "80%";
     cropBox.style.height = "60%";
     cropBox.style.touchAction = "none";
     cropBox.style.background = "rgba(255,255,255,0.05)";
