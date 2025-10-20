@@ -8,7 +8,7 @@
 
   passwordBtn.addEventListener("click", () => {
     const entered = passwordInput.value.trim();
-    if(entered === correctPassword){
+    if (entered === correctPassword) {
       passwordSection.style.display = "none";
       document.getElementById("intro").classList.remove("hidden");
       passwordError.style.display = "none";
@@ -17,9 +17,8 @@
     }
   });
 
-  // Allow pressing Enter to submit
   passwordInput.addEventListener("keydown", (e) => {
-    if(e.key === "Enter") passwordBtn.click();
+    if (e.key === "Enter") passwordBtn.click();
   });
 
   // CONFIG: photos & messages
@@ -30,7 +29,7 @@
     { src: "assets/gallery3.jpg", msg: "No wish could ever match the one I make for you — always, your happiness." }
   ];
 
-  const letterText = Madam Ji,
+  const letterText = `Madam Ji,
 
 I don’t know if words can ever reach the place you hold in me, but I wanted this to be something you can feel — not just read.
 
@@ -40,7 +39,7 @@ On this birthday, I celebrate you — not just for who you are, but for what you
 More patient. More gentle. More real.
 
 Happy birthday, Priye.  
-— Yours, always in silence.;
+— Yours, always in silence.`;
 
   const giftWrap = document.getElementById("giftWrap");
   const introSection = document.getElementById("intro");
@@ -73,8 +72,9 @@ Happy birthday, Priye.
     index = i;
     photoImg.src = photos[i].src;
     photoMsg.textContent = photos[i].msg;
-    progressText.textContent = ${i + 1} / ${photos.length};
+    progressText.textContent = `${i + 1} / ${photos.length}`;
     nextBtn.textContent = (i === photos.length - 1) ? "Open the letter" : "Next";
+    restoreCrop(i);
   }
 
   nextBtn.addEventListener("click", () => {
@@ -108,161 +108,125 @@ Happy birthday, Priye.
     typeLetter(letterText);
   });
 
-  // === Photo Crop Editor (Shift+P then S) ===
-  const photoCard = document.querySelector('.photo-card');
-  const cropOverlay = document.getElementById('cropOverlay');
-  const cropHandle = document.getElementById('cropHandle');
-  const cropHUD = document.getElementById('cropHUD');
-  const hudWH = document.getElementById('hudWH');
-  const hudXY = document.getElementById('hudXY');
-  const cropExit = document.getElementById('cropExit');
+  // ======= CROP EDITOR FEATURE =======
+  let cropMode = false;
+  let cropBox = null;
+  let startX, startY, startW, startH;
+  let dragging = false, resizing = false;
+  const cropData = JSON.parse(localStorage.getItem("cropData") || "{}");
 
-  const STORAGE_KEY = 'cropV1';
-  const savedSettings = (() => {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch { return null; }
-  })() || photos.map(() => ({ w: null, h: null, x: 50, y: 50 }));
-
-  let editMode = false;
-  let chordAwaitS = null;
-
-  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
-
-  function applySettingsFor(i){
-    const s = savedSettings[i] || { w:null, h:null, x:50, y:50 };
-    if (s.w && s.h) {
-      photoCard.style.width = s.w + 'px';
-      photoCard.style.height = s.h + 'px';
+  function restoreCrop(i) {
+    const data = cropData[i];
+    if (data) {
+      photoImg.style.objectPosition = `${data.x}% ${data.y}%`;
+      photoImg.style.objectFit = "cover";
     } else {
-      photoCard.style.width = '';
-      photoCard.style.height = '';
-    }
-    photoImg.style.objectFit = 'cover';
-    photoImg.style.objectPosition = `${clamp(s.x,0,100)}% ${clamp(s.y,0,100)}%`;
-    if (!cropHUD.classList.contains('hidden')) {
-      hudWH.textContent = `W: ${s.w || Math.round(photoCard.clientWidth)}  H: ${s.h || Math.round(photoCard.clientHeight)}`;
-      hudXY.textContent = `X: ${Math.round(s.x)}%  Y: ${Math.round(s.y)}%`;
+      photoImg.style.objectPosition = "50% 50%";
+      photoImg.style.objectFit = "cover";
     }
   }
 
-  // Hook into showPhoto to keep per-photo settings
-  const __origShowPhoto = showPhoto;
-  showPhoto = function(i){
-    __origShowPhoto(i);
-    if (!savedSettings[i].w || !savedSettings[i].h) {
-      const r = photoCard.getBoundingClientRect();
-      savedSettings[i].w = Math.round(r.width);
-      savedSettings[i].h = Math.round(r.height);
-    }
-    applySettingsFor(i);
-  };
-
-  function enterEdit(){
-    if (editMode) return;
-    editMode = true;
-    cropOverlay.classList.remove('hidden');
-    cropHUD.classList.remove('hidden');
-    const s = savedSettings[index];
-    if (!s.w || !s.h){
-      const r = photoCard.getBoundingClientRect();
-      s.w = Math.round(r.width);
-      s.h = Math.round(r.height);
-    }
-    applySettingsFor(index);
-  }
-  function exitEdit(save=true){
-    if (!editMode) return;
-    editMode = false;
-    cropOverlay.classList.add('hidden');
-    cropHUD.classList.add('hidden');
-    if (save) {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedSettings)); } catch {}
-    }
+  function toggleCropMode() {
+    cropMode = !cropMode;
+    if (cropMode) startCropEditor();
+    else endCropEditor();
   }
 
-  // Key chord: Shift + P then S within 700ms
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { exitEdit(true); return; }
-    if (e.shiftKey && (e.key === 'P' || e.key === 'p')) {
-      chordAwaitS?.();
-      let cleared = false;
-      const t = setTimeout(() => { cleared = true; }, 700);
-      chordAwaitS = () => { clearTimeout(t); cleared = true; };
-      const onS = (ev) => {
-        if (!cleared && ev.shiftKey && (ev.key === 'S' || ev.key === 's')) {
-          ev.preventDefault();
-          editMode ? exitEdit(true) : enterEdit();
-        }
-        window.removeEventListener('keydown', onS, true);
-      };
-      window.addEventListener('keydown', onS, true);
+  function startCropEditor() {
+    if (cropBox) return;
+    cropBox = document.createElement("div");
+    cropBox.id = "cropBox";
+    cropBox.style.position = "absolute";
+    cropBox.style.border = "2px dashed #ff7b9c";
+    cropBox.style.zIndex = "9999";
+    cropBox.style.top = "20%";
+    cropBox.style.left = "20%";
+    cropBox.style.width = "60%";
+    cropBox.style.height = "60%";
+    cropBox.style.touchAction = "none";
+    cropBox.style.background = "rgba(255,255,255,0.05)";
+    cropBox.style.backdropFilter = "contrast(0.8)";
+    photoImg.parentElement.style.position = "relative";
+    photoImg.parentElement.appendChild(cropBox);
+
+    // Overlay label
+    const label = document.createElement("div");
+    label.id = "cropLabel";
+    label.style.position = "absolute";
+    label.style.top = "8px";
+    label.style.left = "8px";
+    label.style.padding = "4px 8px";
+    label.style.background = "rgba(0,0,0,0.6)";
+    label.style.color = "#fff";
+    label.style.borderRadius = "6px";
+    label.style.fontSize = "0.8rem";
+    label.innerText = "Adjust crop → Drag/Resize | Press Shift+P+S to save";
+    cropBox.appendChild(label);
+
+    cropBox.addEventListener("mousedown", startDrag);
+    cropBox.addEventListener("touchstart", startDrag);
+    window.addEventListener("mousemove", onDrag);
+    window.addEventListener("touchmove", onDrag);
+    window.addEventListener("mouseup", endDrag);
+    window.addEventListener("touchend", endDrag);
+  }
+
+  function endCropEditor() {
+    if (!cropBox) return;
+    cropBox.remove();
+    cropBox = null;
+  }
+
+  function startDrag(e) {
+    e.preventDefault();
+    dragging = true;
+    const rect = cropBox.getBoundingClientRect();
+    startX = e.touches ? e.touches[0].clientX : e.clientX;
+    startY = e.touches ? e.touches[0].clientY : e.clientY;
+    startW = rect.width;
+    startH = rect.height;
+  }
+
+  function onDrag(e) {
+    if (!dragging || !cropBox) return;
+    e.preventDefault();
+    const moveX = (e.touches ? e.touches[0].clientX : e.clientX) - startX;
+    const moveY = (e.touches ? e.touches[0].clientY : e.clientY) - startY;
+    cropBox.style.left = `calc(${cropBox.style.left} + ${moveX}px)`;
+    cropBox.style.top = `calc(${cropBox.style.top} + ${moveY}px)`;
+    startX = e.touches ? e.touches[0].clientX : e.clientX;
+    startY = e.touches ? e.touches[0].clientY : e.clientY;
+  }
+
+  function endDrag(e) {
+    if (!dragging) return;
+    dragging = false;
+    saveCrop();
+  }
+
+  function saveCrop() {
+    if (!cropBox) return;
+    const imgRect = photoImg.getBoundingClientRect();
+    const boxRect = cropBox.getBoundingClientRect();
+
+    const centerX = ((boxRect.left + boxRect.width / 2 - imgRect.left) / imgRect.width) * 100;
+    const centerY = ((boxRect.top + boxRect.height / 2 - imgRect.top) / imgRect.height) * 100;
+
+    cropData[index] = { x: centerX, y: centerY };
+    localStorage.setItem("cropData", JSON.stringify(cropData));
+    photoImg.style.objectPosition = `${centerX}% ${centerY}%`;
+  }
+
+  // Keyboard shortcut Shift + P + S
+  let pressedKeys = new Set();
+  window.addEventListener("keydown", (e) => {
+    pressedKeys.add(e.key.toLowerCase());
+    if (pressedKeys.has("shift") && pressedKeys.has("p") && pressedKeys.has("s")) {
+      toggleCropMode();
     }
-  }, { passive: true });
+  });
 
-  // Drag to pan (updates object-position X/Y in %)
-  let panState = null;
-  cropOverlay.addEventListener('pointerdown', (ev) => {
-    if (ev.target === cropHandle) return;
-    cropOverlay.setPointerCapture(ev.pointerId);
-    panState = {
-      startX: ev.clientX,
-      startY: ev.clientY,
-      startPosX: savedSettings[index].x,
-      startPosY: savedSettings[index].y
-    };
+  window.addEventListener("keyup", (e) => {
+    pressedKeys.delete(e.key.toLowerCase());
   });
-  cropOverlay.addEventListener('pointermove', (ev) => {
-    if (!panState) return;
-    const dx = ev.clientX - panState.startX;
-    const dy = ev.clientY - panState.startY;
-    const cw = Math.max(1, photoCard.clientWidth);
-    const ch = Math.max(1, photoCard.clientHeight);
-    const nx = clamp(panState.startPosX + (dx / cw) * 100, 0, 100);
-    const ny = clamp(panState.startPosY + (dy / ch) * 100, 0, 100);
-    savedSettings[index].x = nx;
-    savedSettings[index].y = ny;
-    applySettingsFor(index);
-  });
-  cropOverlay.addEventListener('pointerup', () => {
-    if (panState) {
-      panState = null;
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedSettings)); } catch {}
-    }
-  });
-  cropOverlay.addEventListener('pointercancel', () => { panState = null; });
-
-  // Resize by corner handle (updates frame width/height in px)
-  let resizeState = null;
-  cropHandle.addEventListener('pointerdown', (ev) => {
-    ev.stopPropagation();
-    cropHandle.setPointerCapture(ev.pointerId);
-    resizeState = {
-      startX: ev.clientX,
-      startY: ev.clientY,
-      startW: savedSettings[index].w || Math.round(photoCard.clientWidth),
-      startH: savedSettings[index].h || Math.round(photoCard.clientHeight)
-    };
-  });
-  cropHandle.addEventListener('pointermove', (ev) => {
-    if (!resizeState) return;
-    const dx = ev.clientX - resizeState.startX;
-    const dy = ev.clientY - resizeState.startY;
-    const newW = Math.max(180, Math.round(resizeState.startW + dx));
-    const newH = Math.max(180, Math.round(resizeState.startH + dy));
-    savedSettings[index].w = newW;
-    savedSettings[index].h = newH;
-    applySettingsFor(index);
-  });
-  cropHandle.addEventListener('pointerup', () => {
-    if (resizeState) {
-      resizeState = null;
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedSettings)); } catch {}
-    }
-  });
-  cropHandle.addEventListener('pointercancel', () => { resizeState = null; });
-
-  // Exit button
-  cropExit.addEventListener('click', () => exitEdit(true));
-
-  // Keep HUD updated on window resize
-  window.addEventListener('resize', () => { if (editMode) applySettingsFor(index); }, { passive: true });
 })();
