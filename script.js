@@ -1,5 +1,5 @@
 (() => {
-  // PASSWORD
+  // ===== PASSWORD =====
   const passwordSection = document.getElementById("passwordSection");
   const passwordInput = document.getElementById("passwordInput");
   const passwordBtn = document.getElementById("passwordBtn");
@@ -17,11 +17,11 @@
     }
   });
 
-  passwordInput.addEventListener("keydown", (e) => {
+  passwordInput.addEventListener("keydown", e => {
     if (e.key === "Enter") passwordBtn.click();
   });
 
-  // CONFIG: photos & messages
+  // ===== PHOTOS CONFIG =====
   const photos = [
     { src: "assets/hero.jpg", msg: "Happy Birthday, my Priye — the day you were born, love learned how to breathe." },
     { src: "assets/gallery1.jpg", msg: "You’ve been my calm in chaos, and the reason my silence smiles." },
@@ -41,6 +41,7 @@ More patient. More gentle. More real.
 Happy birthday, Priye.  
 — Yours, always in silence.`;
 
+  // ===== DOM ELEMENTS =====
   const giftWrap = document.getElementById("giftWrap");
   const introSection = document.getElementById("intro");
   const seqSection = document.getElementById("sequence");
@@ -57,7 +58,7 @@ Happy birthday, Priye.
 
   let index = 0;
 
-  // open gift box
+  // ===== GIFT BOX OPEN =====
   giftWrap.addEventListener("click", () => {
     giftWrap.classList.add("open");
     setTimeout(() => {
@@ -86,6 +87,7 @@ Happy birthday, Priye.
     }
   });
 
+  // ===== LETTER =====
   envelopeWrap.addEventListener("click", () => {
     envelopeEl.classList.add("open");
     setTimeout(() => {
@@ -104,15 +106,11 @@ Happy birthday, Priye.
     }, 18);
   }
 
-  replayLetter.addEventListener("click", () => {
-    typeLetter(letterText);
-  });
+  replayLetter.addEventListener("click", () => typeLetter(letterText));
 
-  // ======= CROP EDITOR FEATURE =======
-  let cropMode = false;
-  let cropBox = null;
-  let startX, startY, startW, startH;
-  let dragging = false, resizing = false;
+  // ===== CROP EDITOR =====
+  let cropBox = document.getElementById("cropBox");
+  const cropPreview = document.getElementById("cropPreview");
   const cropData = JSON.parse(localStorage.getItem("cropData") || "{}");
 
   function restoreCrop(i) {
@@ -126,107 +124,157 @@ Happy birthday, Priye.
     }
   }
 
-  function toggleCropMode() {
-    cropMode = !cropMode;
-    if (cropMode) startCropEditor();
-    else endCropEditor();
+  // CREATE OR SHOW CROP BOX
+  function ensureCropBox() {
+    if (!cropBox) {
+      cropBox = document.createElement("div");
+      cropBox.id = "cropBox";
+      cropBox.style.position = "absolute";
+      cropBox.style.border = "3px dashed #ff7b9c";
+      cropBox.style.background = "rgba(255,122,146,0.05)";
+      cropBox.style.cursor = "move";
+      cropBox.style.top = "20%";
+      cropBox.style.left = "20%";
+      cropBox.style.width = "60%";
+      cropBox.style.height = "50%";
+      cropBox.style.zIndex = "999";
+      cropBox.style.display = "flex";
+      cropBox.style.alignItems = "flex-end";
+      cropBox.style.justifyContent = "flex-end";
+      cropPreview.appendChild(cropBox);
+
+      // RESIZE HANDLE
+      const handle = document.createElement("div");
+      handle.className = "resize-handle";
+      cropBox.appendChild(handle);
+      handle.addEventListener("mousedown", startResize);
+      handle.addEventListener("touchstart", startResize, {passive:false});
+
+      // DRAGGING
+      cropBox.addEventListener("mousedown", startDrag);
+      cropBox.addEventListener("touchstart", startDrag, {passive:false});
+
+      // SET BUTTON
+      const setBtn = document.createElement("button");
+      setBtn.textContent = "Set Crop";
+      setBtn.className = "btn";
+      setBtn.style.position = "absolute";
+      setBtn.style.top = "8px";
+      setBtn.style.right = "8px";
+      setBtn.style.zIndex = "1000";
+      cropBox.appendChild(setBtn);
+      setBtn.addEventListener("click", saveCrop);
+    }
   }
 
-  function startCropEditor() {
-    if (cropBox) return;
-    cropBox = document.createElement("div");
-    cropBox.id = "cropBox";
-    cropBox.style.position = "absolute";
-    cropBox.style.border = "2px dashed #ff7b9c";
-    cropBox.style.zIndex = "9999";
-    cropBox.style.top = "20%";
-    cropBox.style.left = "20%";
-    cropBox.style.width = "80%";
-    cropBox.style.height = "60%";
-    cropBox.style.touchAction = "none";
-    cropBox.style.background = "rgba(255,255,255,0.05)";
-    cropBox.style.backdropFilter = "contrast(0.8)";
-    photoImg.parentElement.style.position = "relative";
-    photoImg.parentElement.appendChild(cropBox);
-
-    // Overlay label
-    const label = document.createElement("div");
-    label.id = "cropLabel";
-    label.style.position = "absolute";
-    label.style.top = "8px";
-    label.style.left = "8px";
-    label.style.padding = "4px 8px";
-    label.style.background = "rgba(0,0,0,0.6)";
-    label.style.color = "#fff";
-    label.style.borderRadius = "6px";
-    label.style.fontSize = "0.8rem";
-    label.innerText = "Adjust crop → Drag/Resize | Press Shift+P+S to save";
-    cropBox.appendChild(label);
-
-    cropBox.addEventListener("mousedown", startDrag);
-    cropBox.addEventListener("touchstart", startDrag);
+  // ===== DRAGGING =====
+  let dragStartX, dragStartY, dragStartLeft, dragStartTop;
+  function startDrag(e) {
+    e.preventDefault();
+    ensureCropBox();
+    dragging = true;
+    dragStartX = e.touches ? e.touches[0].clientX : e.clientX;
+    dragStartY = e.touches ? e.touches[0].clientY : e.clientY;
+    dragStartLeft = cropBox.offsetLeft;
+    dragStartTop = cropBox.offsetTop;
     window.addEventListener("mousemove", onDrag);
-    window.addEventListener("touchmove", onDrag);
     window.addEventListener("mouseup", endDrag);
+    window.addEventListener("touchmove", onDrag, {passive:false});
     window.addEventListener("touchend", endDrag);
   }
 
-  function endCropEditor() {
-    if (!cropBox) return;
-    cropBox.remove();
-    cropBox = null;
-  }
-
-  function startDrag(e) {
-    e.preventDefault();
-    dragging = true;
-    const rect = cropBox.getBoundingClientRect();
-    startX = e.touches ? e.touches[0].clientX : e.clientX;
-    startY = e.touches ? e.touches[0].clientY : e.clientY;
-    startW = rect.width;
-    startH = rect.height;
-  }
-
+  let dragging = false;
   function onDrag(e) {
-    if (!dragging || !cropBox) return;
-    e.preventDefault();
-    const moveX = (e.touches ? e.touches[0].clientX : e.clientX) - startX;
-    const moveY = (e.touches ? e.touches[0].clientY : e.clientY) - startY;
-    cropBox.style.left = `calc(${cropBox.style.left} + ${moveX}px)`;
-    cropBox.style.top = `calc(${cropBox.style.top} + ${moveY}px)`;
-    startX = e.touches ? e.touches[0].clientX : e.clientX;
-    startY = e.touches ? e.touches[0].clientY : e.clientY;
-  }
-
-  function endDrag(e) {
     if (!dragging) return;
-    dragging = false;
-    saveCrop();
+    e.preventDefault();
+    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    const y = e.touches ? e.touches[0].clientY : e.clientY;
+    let dx = x - dragStartX;
+    let dy = y - dragStartY;
+    let newLeft = dragStartLeft + dx;
+    let newTop = dragStartTop + dy;
+
+    // Boundaries
+    newLeft = Math.max(0, Math.min(cropPreview.clientWidth - cropBox.offsetWidth, newLeft));
+    newTop = Math.max(0, Math.min(cropPreview.clientHeight - cropBox.offsetHeight, newTop));
+
+    cropBox.style.left = newLeft + "px";
+    cropBox.style.top = newTop + "px";
   }
 
+  function endDrag() {
+    dragging = false;
+  }
+
+  // ===== RESIZING =====
+  let resizing = false, resizeStartX, resizeStartY, resizeStartW, resizeStartH;
+  function startResize(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    resizing = true;
+    resizeStartX = e.touches ? e.touches[0].clientX : e.clientX;
+    resizeStartY = e.touches ? e.touches[0].clientY : e.clientY;
+    resizeStartW = cropBox.offsetWidth;
+    resizeStartH = cropBox.offsetHeight;
+    window.addEventListener("mousemove", onResize);
+    window.addEventListener("mouseup", endResize);
+    window.addEventListener("touchmove", onResize, {passive:false});
+    window.addEventListener("touchend", endResize);
+  }
+
+  function onResize(e) {
+    if (!resizing) return;
+    e.preventDefault();
+    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    const y = e.touches ? e.touches[0].clientY : e.clientY;
+    let newW = resizeStartW + (x - resizeStartX);
+    let newH = resizeStartH + (y - resizeStartY);
+
+    // Minimum size
+    newW = Math.max(50, Math.min(cropPreview.clientWidth - cropBox.offsetLeft, newW));
+    newH = Math.max(50, Math.min(cropPreview.clientHeight - cropBox.offsetTop, newH));
+
+    cropBox.style.width = newW + "px";
+    cropBox.style.height = newH + "px";
+  }
+
+  function endResize() {
+    resizing = false;
+  }
+
+  // ===== SAVE CROP =====
   function saveCrop() {
     if (!cropBox) return;
     const imgRect = photoImg.getBoundingClientRect();
+    const previewRect = cropPreview.getBoundingClientRect();
     const boxRect = cropBox.getBoundingClientRect();
 
-    const centerX = ((boxRect.left + boxRect.width / 2 - imgRect.left) / imgRect.width) * 100;
-    const centerY = ((boxRect.top + boxRect.height / 2 - imgRect.top) / imgRect.height) * 100;
+    const centerX = ((boxRect.left + boxRect.width/2 - previewRect.left) / previewRect.width) * 100;
+    const centerY = ((boxRect.top + boxRect.height/2 - previewRect.top) / previewRect.height) * 100;
 
     cropData[index] = { x: centerX, y: centerY };
     localStorage.setItem("cropData", JSON.stringify(cropData));
+
     photoImg.style.objectPosition = `${centerX}% ${centerY}%`;
+    photoImg.style.objectFit = "cover";
+    alert("Crop saved for this photo!");
   }
 
-  // Keyboard shortcut Shift + P + S
+  // ===== TOGGLE CROP EDITOR =====
+  let cropMode = false;
+  function toggleCropMode() {
+    cropMode = !cropMode;
+    if (cropMode) ensureCropBox();
+    else { if(cropBox) cropBox.remove(); cropBox=null; }
+  }
+
   let pressedKeys = new Set();
-  window.addEventListener("keydown", (e) => {
+  window.addEventListener("keydown", e => {
     pressedKeys.add(e.key.toLowerCase());
     if (pressedKeys.has("shift") && pressedKeys.has("p") && pressedKeys.has("s")) {
       toggleCropMode();
     }
   });
+  window.addEventListener("keyup", e => pressedKeys.delete(e.key.toLowerCase()));
 
-  window.addEventListener("keyup", (e) => {
-    pressedKeys.delete(e.key.toLowerCase());
-  });
 })();
