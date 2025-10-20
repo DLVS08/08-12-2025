@@ -22,31 +22,39 @@
   });
 
   // ===== PHOTOS CONFIG =====
-  // Each photo now has its own object-fit and object-position values
+  // Now includes objectFit, objectPosition, width%, height% for manual control
   const photos = [
     { 
       src: "assets/hero.jpg", 
       msg: "Happy Birthday, my Priye — the day you were born, love learned how to breathe.",
       objectFit: "cover",
-      objectPosition: "50% 70%" 
+      objectPosition: "50% 50%",
+      width: "120%",   // zoom horizontally
+      height: "120%"   // zoom vertically
     },
     { 
       src: "assets/gallery1.jpg", 
       msg: "You’ve been my calm in chaos, and the reason my silence smiles.",
       objectFit: "cover",
-      objectPosition: "50% 40%" 
+      objectPosition: "50% 40%",
+      width: "110%",
+      height: "110%"
     },
     { 
       src: "assets/gallery2.jpg", 
       msg: "If I could gift you one thing today, it would be the way my heart sees you.",
       objectFit: "cover",
-      objectPosition: "60% 50%" 
+      objectPosition: "60% 50%",
+      width: "130%",
+      height: "130%"
     },
     { 
       src: "assets/gallery3.jpg", 
       msg: "No wish could ever match the one I make for you — always, your happiness.",
       objectFit: "cover",
-      objectPosition: "50% 60%" 
+      objectPosition: "50% 60%",
+      width: "125%",
+      height: "125%"
     }
   ];
 
@@ -98,9 +106,11 @@ Happy birthday, Priye.
     progressText.textContent = `${i + 1} / ${photos.length}`;
     nextBtn.textContent = (i === photos.length - 1) ? "Open the letter" : "Next";
 
-    // Apply manual crop / alignment
+    // Apply manual crop / alignment / zoom
     photoImg.style.objectFit = photo.objectFit;
     photoImg.style.objectPosition = photo.objectPosition;
+    photoImg.style.width = photo.width;
+    photoImg.style.height = photo.height;
   }
 
   nextBtn.addEventListener("click", () => {
