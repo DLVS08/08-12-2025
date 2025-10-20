@@ -28,7 +28,7 @@
       src: "assets/hero.jpg", 
       msg: "Happy Birthday, my Priye — the day you were born, love learned how to breathe.",
       objectFit: "cover",
-      objectPosition: "50% 50%" 
+      objectPosition: "50% 70%" 
     },
     { 
       src: "assets/gallery1.jpg", 
