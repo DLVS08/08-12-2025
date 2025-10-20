@@ -28,9 +28,9 @@
       src: "assets/hero.jpg", 
       msg: "Happy Birthday, my Priye — the day you were born, love learned how to breathe.",
       objectFit: "cover",
-      objectPosition: "50% 50%",
-      width: "120%",   // zoom horizontally
-      height: "120%"   // zoom vertically
+      objectPosition: "80% 60%",
+      width: "130%",   // zoom horizontally
+      height: "150%"   // zoom vertically
     },
     { 
       src: "assets/gallery1.jpg", 
