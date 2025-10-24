@@ -33,7 +33,7 @@
 
     <!-- Photo sequence -->
     <section id="sequence" class="center hidden">
-      <div class="photo-card" id="photoCard">
+      <div class="photo-card">
         <img id="photoImg" src="" alt="photo" />
         <div id="photoMsg" class="photo-msg"></div>
       </div>
@@ -68,32 +68,6 @@
     <footer class="center muted">With quiet courage — Yours.</footer>
   </main>
 
-  <!-- EDITOR MODAL (hidden by default) -->
-  <div id="cropEditor" class="crop-editor" aria-hidden="true" style="display:none;">
-    <div class="crop-inner">
-      <header class="crop-header">
-        <h3>Edit visible area (press Shift+P+S to toggle)</h3>
-        <div class="crop-info" id="cropInfo">photo: — | box: —</div>
-      </header>
-
-      <div class="crop-preview" id="cropPreview">
-        <!-- preview image inserted dynamically -->
-        <img id="previewImg" src="" alt="preview">
-        <div id="cropBox" class="crop-box" tabindex="0">
-          <div class="resize-handle" id="resizeHandle"></div>
-        </div>
-      </div>
-
-      <div class="crop-actions">
-        <button id="saveCrop" class="btn">Save</button>
-        <button id="resetCrop" class="btn outline">Reset</button>
-        <button id="closeCrop" class="btn outline">Close</button>
-      </div>
-
-      <p class="muted small" style="margin-top:8px;">Drag the box to choose which part should be visible. Resize with the bottom-right handle. Save to make it permanent for this photo.</p>
-    </div>
-  </div>
-
   <script src="script.js"></script>
 </body>
-</html>
+</html>  index.html
