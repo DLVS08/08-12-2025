@@ -1,5 +1,5 @@
 (() => {
-  // ===== PASSWORD =====
+  // PASSWORD
   const passwordSection = document.getElementById("passwordSection");
   const passwordInput = document.getElementById("passwordInput");
   const passwordBtn = document.getElementById("passwordBtn");
@@ -8,7 +8,7 @@
 
   passwordBtn.addEventListener("click", () => {
     const entered = passwordInput.value.trim();
-    if (entered === correctPassword) {
+    if(entered === correctPassword){
       passwordSection.style.display = "none";
       document.getElementById("intro").classList.remove("hidden");
       passwordError.style.display = "none";
@@ -17,45 +17,17 @@
     }
   });
 
-  passwordInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") passwordBtn.click();
+  // Allow pressing Enter to submit
+  passwordInput.addEventListener("keydown", (e) => {
+    if(e.key === "Enter") passwordBtn.click();
   });
 
-  // ===== PHOTOS CONFIG =====
-  // Now includes objectFit, objectPosition, width%, height% for manual control
+  // CONFIG: photos & messages
   const photos = [
-    { 
-      src: "assets/hero.jpg", 
-      msg: "Happy Birthday, my Priye — the day you were born, love learned how to breathe.",
-      objectFit: "cover",
-      objectPosition: "80% 60%",
-      width: "130%",   // zoom horizontally
-      height: "150%"   // zoom vertically
-    },
-    { 
-      src: "assets/gallery1.jpg", 
-      msg: "You’ve been my calm in chaos, and the reason my silence smiles.",
-      objectFit: "cover",
-      objectPosition: "50% 40%",
-      width: "110%",
-      height: "110%"
-    },
-    { 
-      src: "assets/gallery2.jpg", 
-      msg: "If I could gift you one thing today, it would be the way my heart sees you.",
-      objectFit: "cover",
-      objectPosition: "60% 50%",
-      width: "130%",
-      height: "130%"
-    },
-    { 
-      src: "assets/gallery3.jpg", 
-      msg: "No wish could ever match the one I make for you — always, your happiness.",
-      objectFit: "cover",
-      objectPosition: "50% 60%",
-      width: "125%",
-      height: "125%"
-    }
+    { src: "assets/hero.jpg", msg: "Happy Birthday, my Priye — the day you were born, love learned how to breathe." },
+    { src: "assets/gallery1.jpg", msg: "You’ve been my calm in chaos, and the reason my silence smiles." },
+    { src: "assets/gallery2.jpg", msg: "If I could gift you one thing today, it would be the way my heart sees you." },
+    { src: "assets/gallery3.jpg", msg: "No wish could ever match the one I make for you — always, your happiness." }
   ];
 
   const letterText = `Madam Ji,
@@ -70,7 +42,6 @@ More patient. More gentle. More real.
 Happy birthday, Priye.  
 — Yours, always in silence.`;
 
-  // ===== DOM ELEMENTS =====
   const giftWrap = document.getElementById("giftWrap");
   const introSection = document.getElementById("intro");
   const seqSection = document.getElementById("sequence");
@@ -87,7 +58,7 @@ Happy birthday, Priye.
 
   let index = 0;
 
-  // ===== GIFT BOX OPEN =====
+  // open gift box
   giftWrap.addEventListener("click", () => {
     giftWrap.classList.add("open");
     setTimeout(() => {
@@ -100,17 +71,10 @@ Happy birthday, Priye.
   function showPhoto(i) {
     if (i < 0 || i >= photos.length) return;
     index = i;
-    const photo = photos[i];
-    photoImg.src = photo.src;
-    photoMsg.textContent = photo.msg;
+    photoImg.src = photos[i].src;
+    photoMsg.textContent = photos[i].msg;
     progressText.textContent = `${i + 1} / ${photos.length}`;
     nextBtn.textContent = (i === photos.length - 1) ? "Open the letter" : "Next";
-
-    // Apply manual crop / alignment / zoom
-    photoImg.style.objectFit = photo.objectFit;
-    photoImg.style.objectPosition = photo.objectPosition;
-    photoImg.style.width = photo.width;
-    photoImg.style.height = photo.height;
   }
 
   nextBtn.addEventListener("click", () => {
@@ -122,7 +86,6 @@ Happy birthday, Priye.
     }
   });
 
-  // ===== LETTER =====
   envelopeWrap.addEventListener("click", () => {
     envelopeEl.classList.add("open");
     setTimeout(() => {
@@ -141,6 +104,7 @@ Happy birthday, Priye.
     }, 18);
   }
 
-  replayLetter.addEventListener("click", () => typeLetter(letterText));
-
-})();
+  replayLetter.addEventListener("click", () => {
+    typeLetter(letterText);
+  });
+})(); 
