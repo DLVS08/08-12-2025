@@ -8,6 +8,9 @@
 </head>
 <body>
   <main class="page center" id="celebrationPage">
+    <!-- Cloth overlay (tap to reveal cake) -->
+    <div id="clothOverlay" class="cloth">🎀 Tap to Reveal 🎀</div>
+
     <!-- Party poppers (visual anchors) -->
     <div class="popper popper-left" aria-hidden="true"></div>
     <div class="popper popper-right" aria-hidden="true"></div>
@@ -16,7 +19,7 @@
     <div id="confettiContainer"></div>
     <div id="emojiContainer"></div>
 
-    <!-- Cake (hidden until poppers finish their initial burst animation) -->
+    <!-- Cake (hidden until cloth falls) -->
     <div class="cake-wrap hidden" id="cakeWrap">
       <div class="cake">
         <div class="layer layer-bottom"></div>
@@ -32,7 +35,7 @@
         <div class="plate"></div>
       </div>
 
-      <button id="blowBtn" class="btn">Blow the Candles 🎤</button>
+      <button id="blowBtn" class="btn hidden">Blow the Candles 🎤</button>
       <p id="wishText" class="hint hidden">Make a wish... ✨</p>
     </div>
   </main>
