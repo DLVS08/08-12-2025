@@ -7,28 +7,31 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="page center" id="celebration">
-    <!-- Party poppers -->
-    <div class="popper left"></div>
-    <div class="popper right"></div>
+  <main class="page center" id="celebrationPage">
+    <!-- Party poppers (visual anchors) -->
+    <div class="popper popper-left" aria-hidden="true"></div>
+    <div class="popper popper-right" aria-hidden="true"></div>
 
-    <!-- Confetti & emojis -->
+    <!-- Confetti & emojis containers -->
     <div id="confettiContainer"></div>
     <div id="emojiContainer"></div>
 
-    <!-- Cake -->
+    <!-- Cake (hidden until poppers finish their initial burst animation) -->
     <div class="cake-wrap hidden" id="cakeWrap">
       <div class="cake">
         <div class="layer layer-bottom"></div>
         <div class="layer layer-middle"></div>
         <div class="layer layer-top"></div>
+
         <div class="candles">
-          <div class="candle"><span class="flame"></span></div>
-          <div class="candle"><span class="flame"></span></div>
-          <div class="candle"><span class="flame"></span></div>
+          <div class="candle"><div class="flame"></div></div>
+          <div class="candle"><div class="flame"></div></div>
+          <div class="candle"><div class="flame"></div></div>
         </div>
+
         <div class="plate"></div>
       </div>
+
       <button id="blowBtn" class="btn">Blow the Candles 🎤</button>
       <p id="wishText" class="hint hidden">Make a wish... ✨</p>
     </div>
