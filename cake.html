@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blow the Candles 🎂</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page center" id="celebration">
+    <!-- Party poppers -->
+    <div class="popper left"></div>
+    <div class="popper right"></div>
+
+    <!-- Confetti & emojis -->
+    <div id="confettiContainer"></div>
+    <div id="emojiContainer"></div>
+
+    <!-- Cake -->
+    <div class="cake-wrap hidden" id="cakeWrap">
+      <div class="cake">
+        <div class="layer layer-bottom"></div>
+        <div class="layer layer-middle"></div>
+        <div class="layer layer-top"></div>
+        <div class="candles">
+          <div class="candle"><span class="flame"></span></div>
+          <div class="candle"><span class="flame"></span></div>
+          <div class="candle"><span class="flame"></span></div>
+        </div>
+        <div class="plate"></div>
+      </div>
+      <button id="blowBtn" class="btn">Blow the Candles 🎤</button>
+      <p id="wishText" class="hint hidden">Make a wish... ✨</p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
