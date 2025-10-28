@@ -49,12 +49,13 @@
     const blowBtn = document.getElementById('blowBtn');
     const wishText = document.getElementById('wishText');
 
+    // 🎵 Add background music
+    const bgMusic = new Audio("assets/birthday_song.mp3");
+    bgMusic.volume = 0.7;
+    bgMusic.loop = false;
+
     const confettiColors = ["#ff9fcf","#ffd47a","#90f7ec","#fbb0ff","#a4e8ff","#ffe0b7","#ffb6c1"];
     const emojis = ["🎉","🎂","🎈","💝","✨","🥳","💖","🎊"];
-
-    let confettiInterval = null;
-    let emojiInterval = null;
-    let stopTimeout = null;
 
     function createConfetti(x, y, spread=40) {
       const el = document.createElement('div');
@@ -130,7 +131,6 @@
     }
 
     function glowFireworksBurst() {
-      // bottom corners
       const leftX = 80, leftY = window.innerHeight - 80;
       const rightX = window.innerWidth - 80, rightY = window.innerHeight - 80;
 
@@ -141,7 +141,6 @@
         }, wave * 600);
       }
 
-      // stop automatically after ~4s
       setTimeout(()=> {
         confettiContainer.innerHTML = '';
         emojiContainer.innerHTML = '';
@@ -154,12 +153,9 @@
       const rect = cakeWrap.getBoundingClientRect();
       createSparkles(rect.width/2, 30, 18);
       wishText.classList.remove('hidden');
-
-      // Immediately trigger glowing fireworks burst
       glowFireworksBurst();
 
-      // redirect after 5s
-      setTimeout(()=>{
+      setTimeout(()=> {
         document.body.style.transition = "opacity .5s";
         document.body.style.opacity = 0;
         setTimeout(()=> { window.location.href = "gift.html"; }, 500);
@@ -169,6 +165,7 @@
     window.addEventListener('load', () => {
       if (cakeWrap) cakeWrap.style.transform = "translateY(8px)";
       startInitialPoppers();
+      bgMusic.play().catch(()=> console.log("Autoplay blocked, user gesture needed."));
     });
 
     return;
