@@ -48,16 +48,17 @@
     const cakeWrap = document.getElementById('cakeWrap');
     const blowBtn = document.getElementById('blowBtn');
     const wishText = document.getElementById('wishText');
+    const clothOverlay = document.getElementById('clothOverlay');
 
-    // 🎵 Add background music
-    const bgMusic = new Audio("birthday_song.mp3");
+    // 🎵 Music setup
+    const bgMusic = document.getElementById("bgMusic");
     bgMusic.volume = 0.7;
-    bgMusic.loop = false;
+    bgMusic.loop = true;
 
     const confettiColors = ["#ff9fcf","#ffd47a","#90f7ec","#fbb0ff","#a4e8ff","#ffe0b7","#ffb6c1"];
     const emojis = ["🎉","🎂","🎈","💝","✨","🥳","💖","🎊"];
 
-    function createConfetti(x, y, spread=40) {
+    function createConfetti(x, y) {
       const el = document.createElement('div');
       el.className = 'confetti';
       const w = rand(8, 14);
@@ -98,6 +99,7 @@
       }
     }
 
+    // 🎊 Trigger poppers + confetti
     function startInitialPoppers() {
       popperLeft.classList.add('animate');
       popperRight.classList.add('animate');
@@ -105,6 +107,7 @@
       setTimeout(()=> burstFromCorner(window.innerWidth - 80, window.innerHeight - 80), 350);
       setTimeout(()=> {
         cakeWrap.classList.remove('hidden');
+        blowBtn.classList.remove('hidden');
         cakeWrap.style.opacity = 0;
         cakeWrap.style.transition = "opacity .6s ease, transform .6s ease";
         setTimeout(()=> { cakeWrap.style.opacity = 1; cakeWrap.style.transform = "translateY(0)"; }, 50);
@@ -133,14 +136,12 @@
     function glowFireworksBurst() {
       const leftX = 80, leftY = window.innerHeight - 80;
       const rightX = window.innerWidth - 80, rightY = window.innerHeight - 80;
-
       for (let wave=0; wave<5; wave++){
         setTimeout(()=> {
           burstFromCorner(leftX, leftY);
           burstFromCorner(rightX, rightY);
         }, wave * 600);
       }
-
       setTimeout(()=> {
         confettiContainer.innerHTML = '';
         emojiContainer.innerHTML = '';
@@ -154,7 +155,6 @@
       createSparkles(rect.width/2, 30, 18);
       wishText.classList.remove('hidden');
       glowFireworksBurst();
-
       setTimeout(()=> {
         document.body.style.transition = "opacity .5s";
         document.body.style.opacity = 0;
@@ -162,11 +162,19 @@
       }, 5000);
     });
 
-    window.addEventListener('load', () => {
-      if (cakeWrap) cakeWrap.style.transform = "translateY(8px)";
-      startInitialPoppers();
-      bgMusic.play().catch(()=> console.log("Autoplay blocked, user gesture needed."));
-    });
+    // 🎀 Cloth reveal logic
+    if (clothOverlay) {
+      clothOverlay.addEventListener('click', () => {
+        clothOverlay.style.transition = "transform 1.5s ease, opacity 1s ease";
+        clothOverlay.style.transform = "translateY(120%) rotate(5deg)";
+        clothOverlay.style.opacity = "0";
+        setTimeout(()=> clothOverlay.remove(), 1600);
+
+        // Start music + confetti + show cake
+        bgMusic.play().catch(()=> console.log("User gesture required."));
+        setTimeout(()=> startInitialPoppers(), 1000);
+      });
+    }
 
     return;
   }
@@ -295,5 +303,4 @@ Happy birthday, Priye.
 
     return;
   }
-
 })();
