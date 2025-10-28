@@ -239,3 +239,23 @@ footer{margin-top:auto;padding:18px 6px;font-size:0.95rem}
   .envelope{width:150px;height:100px}
   .cake{width:160px;height:120px}
 }
+
+/* === Added: run glowPulse alongside content animations === */
+.photo-card.glowy.fade-in{
+  animation: glowPulse 2.6s ease-in-out infinite, fadeIn .6s forwards;
+}
+.photo-card.glowy.fade-out{
+  animation: glowPulse 2.6s ease-in-out infinite, fadeOut .6s forwards;
+}
+.photo-card.glowy.slide-lr-in{
+  animation: glowPulse 2.6s ease-in-out infinite, slideRightIn .6s forwards;
+}
+.photo-card.glowy.slide-lr-out{
+  animation: glowPulse 2.6s ease-in-out infinite, slideLeftOut .6s forwards;
+}
+.photo-card.glowy.slide-ud-in{
+  animation: glowPulse 2.6s ease-in-out infinite, slideDownIn .6s forwards;
+}
+.photo-card.glowy.slide-ud-out{
+  animation: glowPulse 2.6s ease-in-out infinite, slideUpOut .6s forwards;
+}
