@@ -50,7 +50,7 @@
     const wishText = document.getElementById('wishText');
 
     // 🎵 Add background music
-    const bgMusic = new Audio("assets/birthday_song.mp3");
+    const bgMusic = new Audio("birthday_song.mp3");
     bgMusic.volume = 0.7;
     bgMusic.loop = false;
 
