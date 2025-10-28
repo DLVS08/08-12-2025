@@ -259,3 +259,34 @@ footer{margin-top:auto;padding:18px 6px;font-size:0.95rem}
 .photo-card.glowy.slide-ud-out{
   animation: glowPulse 2.6s ease-in-out infinite, slideUpOut .6s forwards;
 }
+.cloth {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #ffb6c1, #ffd6e0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+  z-index: 20;
+  animation: float 3s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-10px); }
+}
+
+.cloth.fall {
+  animation: clothFall 1.6s ease forwards;
+}
+
+@keyframes clothFall {
+  0% { transform: translateY(0); opacity: 1; }
+  70% { transform: translateY(120%); opacity: 1; }
+  100% { transform: translateY(150%); opacity: 0; }
+}
+
