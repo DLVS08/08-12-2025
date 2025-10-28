@@ -192,10 +192,10 @@
     const replayLetter = document.getElementById("replayLetter");
 
     const photos = [
-      { src: "assets/hero.jpg", msg: "Happy Birthday, my Priye — the day you were born, love learned how to breathe." },
+      { src: "assets/hero.jpg", msg: "Happy Birthday, Priye — the day you were born, love learned how to breathe." },
       { src: "assets/gallery1.jpg", msg: "You’ve been my calm in chaos, and the reason my silence smiles." },
-      { src: "assets/gallery2.jpg", msg: "If I could gift you one thing today, it would be the way my heart sees you." },
-      { src: "assets/gallery3.jpg", msg: "No wish could ever match the one I make for you — always, your happiness." }
+      { src: "assets/gallery3.jpg", msg: "If I could gift you one thing today, it would be the way my heart sees you." },
+      { src: "assets/gallery2.jpg", msg: "No wish could ever match the one I make for you — always, your happiness." }
     ];
 
     const letterText = `Madam Ji,
