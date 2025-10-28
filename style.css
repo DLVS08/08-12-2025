@@ -196,11 +196,13 @@ body,html{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe U
   box-shadow:0 8px 24px rgba(10,10,10,.06), 0 0 0 10px rgba(255,123,156,0.30), 0 0 14px rgba(255,123,156,0.30);
   animation:glowPulse 2.6s ease-in-out infinite;
 }
+
 @keyframes glowPulse{
-  0%{box-shadow:0 8px 24px rgba(10,10,10,.06), 0 0 0 6px rgba(255,123,156,0.06), 0 0 12px rgba(255,123,156,0.03)}
-  50%{box-shadow:0 12px 34px rgba(10,10,10,.08), 0 0 0 10px rgba(255,123,156,0.12), 0 0 30px rgba(255,123,156,0.09)}
-  100%{box-shadow:0 8px 24px rgba(10,10,10,.06), 0 0 0 6px rgba(255,123,156,0.06), 0 0 12px rgba(255,123,156,0.03)}
+  0%  { box-shadow: 0 8px 24px rgba(10,10,10,.06), 0 0 0 10px rgba(255,123,156,0.16), 0 0 14px rgba(255,123,156,0.14); }
+  50% { box-shadow: 0 12px 34px rgba(10,10,10,.08), 0 0 0 12px rgba(255,123,156,0.36), 0 0 26px rgba(255,123,156,0.30); }
+  100%{ box-shadow: 0 8px 24px rgba(10,10,10,.06), 0 0 0 10px rgba(255,123,156,0.16), 0 0 14px rgba(255,123,156,0.14); }
 }
+
 
 /* transitions for photo effects */
 .fade-out { animation:fadeOut .6s forwards; }
