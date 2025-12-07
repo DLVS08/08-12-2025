@@ -199,9 +199,10 @@
     const photos = [
       { src: "assets/hero.jpg", msg: "Happy Birthday, Priye — the day you were born, love learned how to breathe." },
       { src: "assets/gallery1.jpg", msg: "You’ve been my calm in chaos, and the reason my silence smiles." },
+      { src: "assets/gallery4.jpg", msg: "Some reactions need heat, some need time...but mine only needed you to become something beautiful, something rare" },
       { src: "assets/gallery3.jpg", msg: "If I could gift you one thing today, it would be the way my heart sees you." },
-      { src: "assets/gallery2.jpg", msg: "No wish could ever match the one I make for you — always, your happiness." },
-      { src: "assets/gallery4.jpg", msg: "Some reactions need heat, some need time...but mine only needed you to become something beautiful, something rare" }
+      { src: "assets/gallery2.jpg", msg: "No wish could ever match the one I make for you — always, your happiness." }
+     
     ];
 
     const letterText = `Madam Ji,
@@ -210,12 +211,17 @@ I don’t know if words can ever reach the place you hold in me, but I wanted th
 
 You’re that quiet moment between heartbeats when everything feels right. You may not have accepted my love, but I still carry you like a prayer — without asking, without expecting, only hoping that you are smiling today.
 
-On this birthday, I celebrate you — not just for who you are, but for what you’ve made me become.  
-More patient. More gentle. More real.
+On this birthday, I celebrate you —  my lady of love, my world
 
-Happy birthday, Priye.  
+No matter what the situation is and how distant we are, you are the only one on my mind, in my heart. You have been my cute little chaos in my boring life making it filled with bright colours, excitement and joy. Thanks for being in my life, for each and every support and hope you gave.
+May your Those bright smiles, that made my dull days come alive, become more and more bright and cheerful. May your day adds on more vibrant colours, lots of fun and glorious chapters to your life making it sweeter than your expectation.
+
+No matter what, you are always my beloved cutie pie.. u r cherished so go on exploring more and more, being invisible and fighting harder and i will be always there exploring and adoring u and ur smile and bright eyes a little more, breaking through the invisibility of yours and cheering hardest for all your fights. 
+
+
+Happy birthday, Priye 
 — Yours, always in silence.`;
-
+ 
     let index = 0;
 
     function showPhoto(i) {
