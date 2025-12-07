@@ -9,7 +9,7 @@
 
   /* ========== PASSWORD PAGE (index.html) ========== */
   if (onIndex) {
-    const correctPassword = "Hii";
+    const correctPassword = "Am yours";
     const passwordInput = document.getElementById("passwordInput");
     const passwordBtn = document.getElementById("passwordBtn");
     const passwordError = document.getElementById("passwordError");
