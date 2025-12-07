@@ -216,7 +216,7 @@ On this birthday, I celebrate you —  my lady of love, my world
 No matter what the situation is and how distant we are, you are the only one on my mind, in my heart. You have been my cute little chaos in my boring life making it filled with bright colours, excitement and joy. Thanks for being in my life, for each and every support and hope you gave.
 May your Those bright smiles, that made my dull days come alive, become more and more bright and cheerful. May your day adds on more vibrant colours, lots of fun and glorious chapters to your life making it sweeter than your expectation.
 
-No matter what, you are always my beloved cutie pie.. u r cherished so go on exploring more and more, being invisible and fighting harder and i will be always there exploring and adoring u and ur smile and bright eyes a little more, breaking through the invisibility of yours and cheering hardest for all your fights. 
+No matter what, you are always my beloved cutie pie.. u r cherished forever. so go on exploring more and more, being invisible and fighting harder and i will be always there exploring and adoring u and ur smile and bright eyes a little more, breaking through the invisibility of yours and cheering hardest for all your fights. 
 
 
 Happy birthday, Priye 
